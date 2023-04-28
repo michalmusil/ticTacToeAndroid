@@ -1,4 +1,4 @@
-package cz.mendelu.xmusil5.tictactoe
+package cz.mendelu.xmusil5.tictactoe.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import cz.mendelu.xmusil5.tictactoe.navigation.Destination
+import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
+import cz.mendelu.xmusil5.tictactoe.navigation.NavGraph
 import cz.mendelu.xmusil5.tictactoe.ui.theme.TicTacToeTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var navigationRouter: INavigationRouter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    NavGraph(navigation = navigationRouter, startDestination = Destination.SplashScreen.route)
                 }
             }
         }
