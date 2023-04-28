@@ -1,1 +1,2 @@
-# ticTacToeAndroid
+# Tic tac toe for Android
+A simple game of tic tac toe for Android. It is meant to be a practical implementation for MLP model from: https://github.com/michalmusil/tic-tac-toe-mlp. The exported tflite model is used for decision making of the oponent.
