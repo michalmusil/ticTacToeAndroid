@@ -15,4 +15,14 @@ class StartupViewModel @Inject constructor(
 
     val chosenPlayerMark: MutableStateFlow<PlayerMark?> = MutableStateFlow(null)
     val startingMark: MutableStateFlow<PlayerMark> = MutableStateFlow(PlayerMark.X)
+
+
+    fun startGame(){
+        chosenPlayerMark.value?.let {
+            state.value = StartupUiState.GameStarted(
+                humanPlayerMark = it,
+                startingPlayerMark = startingMark.value
+            )
+        }
+    }
 }

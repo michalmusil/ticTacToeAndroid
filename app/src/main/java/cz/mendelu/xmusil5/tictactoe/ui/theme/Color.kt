@@ -19,8 +19,13 @@ val onSecondary = Color(0xFF2E2E2E)
 val background = Color(0xFFF0EEF1)
 val onBackground = Color(0xFF2E2E2E)
 
-val surface = Color(0xFFC0A5AD)
+val surface = Color(0xFFE9DECB)
 val onSurface = Color(0xFF2E2E2E)
 
 val xColor = Color(0xFFCE1A44)
 val oColor = Color(0xFF2C3CDA)
+
+val disabledColor = Color(0xFF919191)
+val shadowColor = Color(0xFF464646)
+
+val red = Color(0xFFCC0000)

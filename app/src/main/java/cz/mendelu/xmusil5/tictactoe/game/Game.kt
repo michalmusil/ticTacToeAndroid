@@ -16,12 +16,12 @@ class Game(
     val humanPlayer: Player,
     private val computerPlayer: Player,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-    val state: MutableState<GameState> = when{
+    val state: MutableStateFlow<GameState> = when{
         computerPlayer.mark == startingMark -> {
-            mutableStateOf(GameState.ComputerPlayerTurn)
+            MutableStateFlow(GameState.ComputerPlayerTurn)
         }
         else -> {
-            mutableStateOf(GameState.HumanPlayerTurn)
+            MutableStateFlow(GameState.HumanPlayerTurn)
         }
     }
 ) {
@@ -72,6 +72,11 @@ class Game(
         }
         state.value = GameState.HumanPlayerTurn
     }
+
+
+
+
+
 
     private fun checkForVictoriousPlayer(): Player?{
         var victoriousPlayerType: PlayerType? = null

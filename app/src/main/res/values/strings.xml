@@ -2,4 +2,12 @@
     <string name="app_name">Tic tac toe</string>
 
     <string name="starting">Starting</string>
+    <string name="play">Play</string>
+    <string name="concede">Concede</string>
+    <string name="yourTurn">Your turn</string>
+    <string name="oponentsTurn">Oponent\'s turn</string>
+
+    <string name="youHaveWon">You have won</string>
+    <string name="youHaveLost">You have lost</string>
+    <string name="itsTie">It\'s a tie</string>
 </resources>

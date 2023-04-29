@@ -23,11 +23,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
+import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
+import cz.mendelu.xmusil5.tictactoe.ui.theme.shadowColor
 import cz.mendelu.xmusil5.tictactoe.ui.utils.UiConstants
+import cz.mendelu.xmusil5.tictactoe.ui.utils.customShadow
+import cz.mendelu.xmusil5.tictactoe.ui.utils.customShadowPercentage
 
 @Composable
 fun StartupScreen(
@@ -68,6 +73,16 @@ fun StartupScreenContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(60.dp))
+
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
@@ -85,11 +100,25 @@ fun StartupScreenContent(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            CustomButton(
+                text = stringResource(id = R.string.play),
+                enabled = chosenPlayerMark.value != null,
+                iconId = R.drawable.ic_play,
+                textSize = 30.sp,
+                onClick = {
+                    viewModel.startGame()
+                })
         }
 
     }
     
 }
+
+
+
 
 @Composable
 fun PlayerMarkOption(
@@ -98,10 +127,10 @@ fun PlayerMarkOption(
     startingPlayerMark: PlayerMark,
     onClick: (PlayerMark) -> Unit
 ){
-    val size = 100.dp
+    val size = 150.dp
     val cornerRadius = UiConstants.RADIUS_SMALL
     val selectedColor by animateColorAsState(
-        targetValue = if (mark == chosenPlayerMark) MaterialTheme.colorScheme.primary else Color.Transparent,
+        targetValue = if (mark == chosenPlayerMark) mark.color else Color.Transparent,
         animationSpec = tween(UiConstants.ANIMATION_DURATION_SHORT)
     )
 
@@ -109,6 +138,13 @@ fun PlayerMarkOption(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(16.dp)
+            .customShadow(
+                color = shadowColor,
+                borderRadius = cornerRadius,
+                spread = 0.dp,
+                blurRadius = 5.dp,
+                offsetY = 2.dp
+            )
             .size(size)
             .clip(RoundedCornerShape(cornerRadius))
             .clickable {
@@ -129,7 +165,7 @@ fun PlayerMarkOption(
                 contentDescription = mark.symbol,
                 tint = mark.color,
                 modifier = Modifier
-                    .size((size.value*0.7).dp)
+                    .size((size.value*0.5).dp)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -143,6 +179,7 @@ fun PlayerMarkOption(
                     Text(
                         text = stringResource(id = R.string.starting),
                         style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
                     )
                 }

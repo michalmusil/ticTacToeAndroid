@@ -6,4 +6,5 @@ sealed class GameUiState{
     object ComputerPlayerTurn: GameUiState()
     object HumanPlayerVictory: GameUiState()
     object ComputerPlayerVictory: GameUiState()
+    object Tie: GameUiState()
 }
