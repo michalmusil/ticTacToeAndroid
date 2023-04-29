@@ -19,6 +19,7 @@ class GameViewModel @Inject constructor(
     val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     val uiState: MutableStateFlow<GameUiState> = MutableStateFlow(GameUiState.Start)
+    val humanPlayerMark: MutableStateFlow<PlayerMark> = MutableStateFlow(PlayerMark.X)
     var boardTiles: MutableStateFlow<Array<PlayerMark?>> = MutableStateFlow(arrayOfNulls(1))
 
     private lateinit var game: Game
@@ -28,6 +29,7 @@ class GameViewModel @Inject constructor(
             humanPlayerMark = humanPlayerMark
         )
         game = newGame
+        this.humanPlayerMark.value = humanPlayerMark
         boardTiles = game.boardTiles
 
         coroutineScope.launch {
@@ -40,6 +42,21 @@ class GameViewModel @Inject constructor(
                     GameState.Tie -> uiState.value = GameUiState.Tie
                 }
             }
+        }
+    }
+
+    fun getBoardDimensions(): Pair<Int, Int>{
+        return Pair(
+            first = game.numberOfHorizontalTiles,
+            second = game.numberOfVerticalTiles
+        )
+    }
+
+    fun playAtIndex(index: Int){
+        if (uiState.value is GameUiState.HumanPlayerTurn
+            && game.isTileAtIndexEmpty(index)
+        ){
+            game.makeHumanPlayerTurn(index)
         }
     }
 

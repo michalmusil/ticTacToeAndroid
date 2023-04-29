@@ -1,21 +1,23 @@
 package cz.mendelu.xmusil5.tictactoe.game
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class Game(
     private val board: Board,
-    val boardTiles: MutableStateFlow<Array<PlayerMark?>> = board.tiles,
     private val numberOfMarksToWin: Int,
     private val startingMark: PlayerMark,
     val humanPlayer: Player,
     private val computerPlayer: Player,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default),
+) {
+    val boardTiles: MutableStateFlow<Array<PlayerMark?>> = board.tiles
+    val numberOfHorizontalTiles: Int = board.sizeX
+    val numberOfVerticalTiles: Int = board.sizeY
     val state: MutableStateFlow<GameState> = when{
         computerPlayer.mark == startingMark -> {
             MutableStateFlow(GameState.ComputerPlayerTurn)
@@ -24,7 +26,7 @@ class Game(
             MutableStateFlow(GameState.HumanPlayerTurn)
         }
     }
-) {
+
     init {
         if (state.value is GameState.ComputerPlayerTurn){
             makeComputerPlayerTurn()
@@ -59,13 +61,39 @@ class Game(
                 state.value = GameState.ComputerPlayerTurn
             }
         } else {
-            throw IllegalStateException()
+            throw UnsupportedOperationException()
         }
+    }
+
+    fun isTileAtIndexEmpty(index: Int): Boolean{
+        return board.getFreeTileIndexes().contains(index)
     }
 
     private fun makeComputerPlayerTurn(){
 
-        // make the turn.. adjust the board
+        // TEST WITH RANDOM MOVE
+        val freeIndexes1 = board.getFreeTileIndexes()
+        val oponentDecision = freeIndexes1.get(
+            Random.nextInt(from = 0, until = freeIndexes1.size)
+        )
+
+
+
+        if(isTileIndexFree(oponentDecision)){
+            board.setTile(
+                index = oponentDecision,
+                mark = computerPlayer.mark
+            )
+        } else {
+            val freeIndexes = board.getFreeTileIndexes()
+            val selectedIndex = freeIndexes.get(
+                Random.nextInt(from = 0, until = freeIndexes.size)
+            )
+            board.setTile(
+                index = selectedIndex,
+                mark = computerPlayer.mark
+            )
+        }
 
         if (checkForGameEnd()){
             return
@@ -112,7 +140,7 @@ class Game(
     }
 
     private fun isTileIndexFree(tileIndex: Int): Boolean{
-        return !board.getFreeTileIndexes().contains(tileIndex)
+        return board.getFreeTileIndexes().contains(tileIndex)
     }
 
     private fun checkForGameEnd(): Boolean{

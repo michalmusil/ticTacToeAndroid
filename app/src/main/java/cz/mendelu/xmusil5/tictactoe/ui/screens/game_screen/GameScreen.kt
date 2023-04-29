@@ -1,22 +1,24 @@
 package cz.mendelu.xmusil5.tictactoe.ui.screens.game_screen
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
+import cz.mendelu.xmusil5.tictactoe.ui.components.game_elements.Tile
 import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
 import cz.mendelu.xmusil5.tictactoe.ui.theme.red
 
@@ -90,8 +92,65 @@ fun GameScreenContent(
                 textColor = MaterialTheme.colorScheme.background,
                 onClick = {
                     navigation.toStartupScreen()
-                })
+                }
+            )
         }
+        
+        Spacer(modifier = Modifier.height(50.dp))
+        
+        GameBoard(viewModel = viewModel)
+    }
+}
+
+@Composable
+fun GameBoard(
+    viewModel: GameViewModel
+){
+    var boardSize: IntSize? by remember {
+        mutableStateOf(IntSize.Zero)
     }
 
+    val uiState = viewModel.uiState.collectAsState()
+    val boardTiles = viewModel.boardTiles.collectAsState()
+
+    val playerInputEnabled = when(uiState.value){
+        is GameUiState.HumanPlayerTurn -> true
+        else -> false
+    }
+
+    Box(
+        modifier = Modifier
+            .onSizeChanged {
+                boardSize = it
+                boardSize!!.height
+            }
+            .fillMaxWidth()
+            .aspectRatio(1f)
+    ){
+        boardSize?.let {
+            val numberOfVerticalTiles = viewModel.getBoardDimensions().first
+            val sizeOfTile = with(LocalDensity.current){
+                (it.width / numberOfVerticalTiles).toDp()
+            }
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(numberOfVerticalTiles),
+                userScrollEnabled = false,
+                content = {
+                    items(boardTiles.value.size) { index ->
+                        val tile = boardTiles.value.get(index)
+                        val tileIsEmpty = tile == null
+                        Tile(
+                            containedMark = tile,
+                            enabled = playerInputEnabled && tileIsEmpty,
+                            size = sizeOfTile,
+                            onClick = {
+                                viewModel.playAtIndex(index)
+                            }
+                        )
+                    }
+                }
+            )
+        }
+    }
 }

@@ -134,14 +134,19 @@ fun PlayerMarkOption(
         animationSpec = tween(UiConstants.ANIMATION_DURATION_SHORT)
     )
 
+    val dynamicShadowColor by animateColorAsState(
+        targetValue = if (mark == chosenPlayerMark) mark.color else shadowColor,
+        animationSpec = tween(UiConstants.ANIMATION_DURATION_SHORT)
+    )
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(16.dp)
             .customShadow(
-                color = shadowColor,
+                color = dynamicShadowColor,
                 borderRadius = cornerRadius,
-                spread = 0.dp,
+                spread = 2.dp,
                 blurRadius = 5.dp,
                 offsetY = 2.dp
             )
