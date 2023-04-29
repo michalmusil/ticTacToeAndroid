@@ -1,6 +1,7 @@
 package cz.mendelu.xmusil5.tictactoe.navigation
 
 import androidx.navigation.NavController
+import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
 
 class NavigationRouterImpl: INavigationRouter {
 
@@ -31,7 +32,9 @@ class NavigationRouterImpl: INavigationRouter {
         navController.navigate(Destination.StartupScreen.route)
     }
 
-    override fun toGameScreen(player: String) {
-        navController.navigate("Destination.GameScreen.route/${player}")
+    override fun toGameScreen(humanPlayerMark: PlayerMark, startingMark: PlayerMark) {
+        navController.navigate(
+            "${Destination.GameScreen.route}?humanPlayerSymbol=${humanPlayerMark.symbol}?startingMarkSymbol=${startingMark.symbol}"
+        )
     }
 }

@@ -1,6 +1,7 @@
 package cz.mendelu.xmusil5.tictactoe.navigation
 
 import androidx.navigation.NavController
+import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
 
 interface INavigationRouter {
     fun getNavController(): NavController
@@ -9,5 +10,5 @@ interface INavigationRouter {
 
     fun toSplashScreen()
     fun toStartupScreen()
-    fun toGameScreen(player: String)
+    fun toGameScreen(humanPlayerMark: PlayerMark, startingMark: PlayerMark)
 }

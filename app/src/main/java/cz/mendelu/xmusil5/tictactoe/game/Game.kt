@@ -5,13 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class Game(
-    val board: Board,
-    val startingMark: PlayerMark,
+    private val board: Board,
+    val boardTiles: MutableStateFlow<Array<PlayerMark?>> = board.tiles,
+    private val numberOfMarksToWin: Int,
+    private val startingMark: PlayerMark,
     val humanPlayer: Player,
-    val computerPlayer: Player,
+    private val computerPlayer: Player,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     val state: MutableState<GameState> = when{
         computerPlayer.mark == startingMark -> {
@@ -71,11 +74,36 @@ class Game(
     }
 
     private fun checkForVictoriousPlayer(): Player?{
-        return null
+        var victoriousPlayerType: PlayerType? = null
+        val victoryFromRows = board.checkRowsForVictoriousMark(numberOfMarksToWin)
+        victoryFromRows?.let {
+            victoriousPlayerType = getPlayerTypeFromMark(it)
+        }
+        val victoryFromColumns = board.checkColumnsForVictoriousMark(numberOfMarksToWin)
+        victoryFromColumns?.let {
+            victoriousPlayerType = getPlayerTypeFromMark(it)
+        }
+        val victoryFromDiagonals = board.checkDiagonalsForVictoriousMark(numberOfMarksToWin)
+        victoryFromDiagonals?.let {
+            victoriousPlayerType = getPlayerTypeFromMark(it)
+        }
+        when(victoriousPlayerType){
+            PlayerType.HUMAN -> return humanPlayer
+            PlayerType.COMPUTER -> return computerPlayer
+            null -> return null
+        }
+    }
+
+    private fun getPlayerTypeFromMark(mark: PlayerMark): PlayerType{
+        if (computerPlayer.mark == mark){
+            return PlayerType.COMPUTER
+        } else {
+            return PlayerType.HUMAN
+        }
     }
 
     private fun isTie(): Boolean{
-        return false
+        return board.getFreeTileIndexes().isEmpty()
     }
 
     private fun isTileIndexFree(tileIndex: Int): Boolean{
@@ -109,6 +137,7 @@ class Game(
     companion object{
         fun startStandardGame(humanPlayerMark: PlayerMark): Game{
             val board = Board(sizeX = 3, sizeY = 3)
+            val numberOfMarksToWin = 3
             val humanPlayer = Player(playerType = PlayerType.HUMAN, mark = humanPlayerMark)
             val oppositePlayerMark = PlayerMark.values().first{
                 it != humanPlayerMark
@@ -118,6 +147,7 @@ class Game(
 
             return Game(
                 board = board,
+                numberOfMarksToWin = numberOfMarksToWin,
                 startingMark = startingMark,
                 humanPlayer = humanPlayer,
                 computerPlayer = computerPlayer,

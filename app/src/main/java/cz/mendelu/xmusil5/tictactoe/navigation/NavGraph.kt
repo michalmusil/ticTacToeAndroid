@@ -7,7 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.ui.screens.game_screen.GameScreen
 import cz.mendelu.xmusil5.tictactoe.ui.screens.splash_screen.SplashScreen
+import cz.mendelu.xmusil5.tictactoe.ui.screens.startup_screen.StartupScreen
 
 
 @Composable
@@ -35,17 +38,28 @@ fun NavGraph(
             }
 
             composable(Destination.StartupScreen.route) {
-
+                StartupScreen(navigation = navigation)
             }
 
-            composable(Destination.GameScreen.route + "/{playerIdentifier}",
+            composable(Destination.GameScreen.route + "?humanPlayerSymbol={humanPlayerSymbol}?startingMarkSymbol={startingMarkSymbol}",
                 arguments = listOf(
-                    navArgument("playerIdentifier") {
+                    navArgument("humanPlayerSymbol") {
+                        type = NavType.StringType
+                    },
+                    navArgument("startingMarkSymbol") {
                         type = NavType.StringType
                     }
                 )) {
-                val playerIdentifier = it.arguments?.getString("playerIdentifier")
+                val humanPlayerSymbol = it.arguments?.getString("humanPlayerSymbol")
+                val startingMarkSymbol = it.arguments?.getString("startingMarkSymbol")
 
+                val humanPlayerMark = PlayerMark.getBySymbol(humanPlayerSymbol!!)
+                val startingSymbolMark = PlayerMark.getBySymbol(startingMarkSymbol!!)
+                GameScreen(
+                    humanPlayerMark = humanPlayerMark,
+                    startingPlayerMark = startingSymbolMark,
+                    navigation = navigation
+                )
             }
         }
     }
