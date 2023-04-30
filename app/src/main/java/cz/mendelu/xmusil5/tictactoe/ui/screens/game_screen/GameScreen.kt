@@ -31,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.*
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.game.Game
 import cz.mendelu.xmusil5.tictactoe.game.board.LineOrientation
@@ -338,7 +339,19 @@ fun GameEndPopup(
                         fontWeight = FontWeight.Bold
                     )
 
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(90.dp)
+                    ){
+                        GameEndAnimation(
+                            viewModel = viewModel
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
 
                     CustomButton(
                         text = stringResource(id = R.string.playAgain),
@@ -368,5 +381,51 @@ fun GameEndPopup(
             }
 
         }
+    }
+}
+
+
+@Composable
+fun GameEndAnimation(
+    viewModel: GameViewModel
+){
+    val uiState = viewModel.uiState.collectAsState()
+    var show by remember {
+        mutableStateOf(false)
+    }
+    var compositionId by remember {
+        mutableStateOf<Int?>(null)
+    }
+
+    LaunchedEffect(uiState.value) {
+        uiState.value.let {
+            when (it) {
+                is GameUiState.ComputerPlayerVictory -> {
+                    show = true
+                    compositionId = R.raw.lost
+                }
+                is GameUiState.HumanPlayerVictory -> {
+                    show = true
+                    compositionId = R.raw.trophy
+                }
+                is GameUiState.Tie -> {
+                    show = true
+                    compositionId = R.raw.retry
+                }
+            }
+        }
+    }
+    compositionId?.let {
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(it)
+        )
+        val progress by animateLottieCompositionAsState(
+            composition = composition,
+            iterations = 1
+        )
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+        )
     }
 }

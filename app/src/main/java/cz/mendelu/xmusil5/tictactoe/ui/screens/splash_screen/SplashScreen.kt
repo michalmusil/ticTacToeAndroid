@@ -1,24 +1,16 @@
 package cz.mendelu.xmusil5.tictactoe.ui.screens.splash_screen
 
-import android.Manifest
-import android.os.Build
-import android.view.animation.OvershootInterpolator
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
 import kotlinx.coroutines.delay
@@ -26,43 +18,61 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     navigation: INavigationRouter,
-    screenDuration: Long = 2000,
+    maxScreenDuration: Long = 3000,
 ){
-    val targetLogoSize = remember {
-        220f
-    }
-    val currentLogoSize = remember {
-        Animatable(0f)
+    val animationIsPlaying = remember {
+        mutableStateOf(true)
     }
 
-    LaunchedEffect(true){
-        currentLogoSize.animateTo(
-            targetValue = targetLogoSize,
-            animationSpec = tween(
-                durationMillis = (screenDuration/2).toInt(),
-                easing = {
-                    OvershootInterpolator(1.7f).getInterpolation(it)
-                }
-            )
-        )
+    LaunchedEffect(animationIsPlaying.value){
+        if (!animationIsPlaying.value){
+            navigation.toStartupScreen()
+        }
     }
     LaunchedEffect(true){
-        delay(screenDuration)
-        navigation.toStartupScreen()
+        // A failsafe if the animation has an unexpected error
+        delay(maxScreenDuration)
+        if (animationIsPlaying.value){
+            navigation.toStartupScreen()
+        }
     }
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ){
-
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
+    ) {
+        Box(
             modifier = Modifier
-                .size(currentLogoSize.value.dp)
-        )
+                .padding(16.dp)
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            SplashAnimation(
+                isPlaying = animationIsPlaying
+            )
+        }
     }
+}
+
+@Composable
+fun SplashAnimation(
+    isPlaying: MutableState<Boolean>
+){
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.opening)
+    )
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        speed = 1.5f
+    )
+    LottieAnimation(
+        composition = composition,
+        progress = { progress },
+    )
+    if (progress >= 1.0f){
+        isPlaying.value = false
+    }
+
 }
