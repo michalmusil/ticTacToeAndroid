@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.game.Game
+import cz.mendelu.xmusil5.tictactoe.game.board.LineOrientation
 import cz.mendelu.xmusil5.tictactoe.game.board.VictoryPath
 import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
@@ -161,10 +162,22 @@ fun GameBoard(
                     items(boardTiles.value.size) { index ->
                         val tile = boardTiles.value.get(index)
                         val tileIsEmpty = tile == null
+                        var lineToDraw by remember{
+                            mutableStateOf<LineOrientation?>(null)
+                        }
+                        LaunchedEffect(victoryPath){
+                            victoryPath?.let {
+                                if (it.pathIndexes.contains(index)){
+                                    lineToDraw = it.lineOrientation
+                                }
+                            }
+                        }
+
                         Tile(
                             containedMark = tile,
                             enabled = playerInputEnabled && tileIsEmpty,
                             size = sizeOfTile,
+                            lineToDraw = lineToDraw,
                             onClick = {
                                 viewModel.playAtIndex(index)
                             }
