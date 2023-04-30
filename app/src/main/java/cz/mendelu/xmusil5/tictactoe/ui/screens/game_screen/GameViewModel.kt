@@ -1,6 +1,7 @@
 package cz.mendelu.xmusil5.tictactoe.ui.screens.game_screen
 
 import androidx.lifecycle.ViewModel
+import cz.mendelu.xmusil5.tictactoe.ai.IAiPlayerBrain
 import cz.mendelu.xmusil5.tictactoe.game.Game
 import cz.mendelu.xmusil5.tictactoe.game.GameState
 import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-
+    private val aiPlayerBrain: IAiPlayerBrain
 ): ViewModel() {
     val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
@@ -26,7 +27,8 @@ class GameViewModel @Inject constructor(
 
     fun initializeGame(humanPlayerMark: PlayerMark, startingPlayerMark: PlayerMark){
         val newGame = Game.startStandardGame(
-            humanPlayerMark = humanPlayerMark
+            humanPlayerMark = humanPlayerMark,
+            computerPlayerBrain = aiPlayerBrain
         )
         game = newGame
         this.humanPlayerMark.value = humanPlayerMark

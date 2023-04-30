@@ -19,12 +19,12 @@ class Board(
         tiles.value = newTiles
     }
 
-    fun getEncodedStateRepresentation(humanPlayer: Player): IntArray{
+    fun getEncodedStateRepresentation(humanPlayerMark: PlayerMark): IntArray{
         val encodedState = mutableListOf<Int>()
         for (i in tiles.value.indices){
             val mark = tiles.value.get(i)
             when(mark){
-                humanPlayer.mark -> {
+                humanPlayerMark -> {
                     encodedState.add(1)
                 }
                 null -> {
