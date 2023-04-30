@@ -1,6 +1,6 @@
 package cz.mendelu.xmusil5.tictactoe.ui.screens.startup_screen
 
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 
 sealed class StartupUiState{
     class Start: StartupUiState()

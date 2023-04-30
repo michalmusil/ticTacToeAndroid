@@ -1,5 +1,10 @@
 package cz.mendelu.xmusil5.tictactoe.game
 
+import cz.mendelu.xmusil5.tictactoe.game.board.Board
+import cz.mendelu.xmusil5.tictactoe.game.board.VictoryPath
+import cz.mendelu.xmusil5.tictactoe.game.player.Player
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,10 +25,10 @@ class Game(
     val numberOfVerticalTiles: Int = board.sizeY
     val state: MutableStateFlow<GameState> = when{
         computerPlayer.mark == startingMark -> {
-            MutableStateFlow(GameState.ComputerPlayerTurn)
+            MutableStateFlow(GameState.ComputerPlayerTurn())
         }
         else -> {
-            MutableStateFlow(GameState.HumanPlayerTurn)
+            MutableStateFlow(GameState.HumanPlayerTurn())
         }
     }
 
@@ -58,7 +63,7 @@ class Game(
                 if (checkForGameEnd()){
                     return
                 }
-                state.value = GameState.ComputerPlayerTurn
+                state.value = GameState.ComputerPlayerTurn()
             }
         } else {
             throw UnsupportedOperationException()
@@ -98,36 +103,50 @@ class Game(
         if (checkForGameEnd()){
             return
         }
-        state.value = GameState.HumanPlayerTurn
+        state.value = GameState.HumanPlayerTurn()
     }
 
 
 
 
-
-
-    private fun checkForVictoriousPlayer(): Player?{
-        var victoriousPlayerType: PlayerType? = null
-        val victoryFromRows = board.checkRowsForVictoriousMark(numberOfMarksToWin)
-        victoryFromRows?.let {
-            victoriousPlayerType = getPlayerTypeFromMark(it)
+    private fun checkForGameEnd(): Boolean{
+        val victoryPath = checkForVictoryPath()
+        victoryPath?.let {
+            val victoriousPlayerType = getPlayerTypeFromMark(it.playerMark)
+            when(victoriousPlayerType){
+                PlayerType.HUMAN -> {
+                    state.value = GameState.HumanPlayerWon(it)
+                }
+                PlayerType.COMPUTER -> {
+                    state.value = GameState.ComputerPlayerWon(it)
+                }
+            }
+            return true
         }
-        val victoryFromColumns = board.checkColumnsForVictoriousMark(numberOfMarksToWin)
+        if (isTie()){
+            state.value = GameState.Tie()
+            return true
+        }
+        return false
+    }
+
+    private fun checkForVictoryPath(): VictoryPath?{
+        val victoryFromRows = board.checkRowsForVictoryPath(numberOfMarksToWin)
+        victoryFromRows?.let {
+            return it
+        }
+        val victoryFromColumns = board.checkColumnsForVictoryPath(numberOfMarksToWin)
         victoryFromColumns?.let {
-            victoriousPlayerType = getPlayerTypeFromMark(it)
+            return it
         }
         val victoryFromDiagonals = board.checkDiagonalsForVictoriousMark(numberOfMarksToWin)
         victoryFromDiagonals?.let {
-            victoriousPlayerType = getPlayerTypeFromMark(it)
+            return it
         }
-        when(victoriousPlayerType){
-            PlayerType.HUMAN -> return humanPlayer
-            PlayerType.COMPUTER -> return computerPlayer
-            null -> return null
-        }
+        return null
     }
 
-    private fun getPlayerTypeFromMark(mark: PlayerMark): PlayerType{
+    private fun getPlayerTypeFromMark(mark: PlayerMark): PlayerType {
         if (computerPlayer.mark == mark){
             return PlayerType.COMPUTER
         } else {
@@ -141,26 +160,6 @@ class Game(
 
     private fun isTileIndexFree(tileIndex: Int): Boolean{
         return board.getFreeTileIndexes().contains(tileIndex)
-    }
-
-    private fun checkForGameEnd(): Boolean{
-        val victoriousPlayer = checkForVictoriousPlayer()
-        if (victoriousPlayer != null) {
-            when(victoriousPlayer.playerType){
-                PlayerType.HUMAN -> {
-                    state.value = GameState.HumanPlayerWon
-                }
-                PlayerType.COMPUTER -> {
-                    state.value = GameState.ComputerPlayerWon
-                }
-            }
-            return true
-        }
-        if (isTie()){
-            state.value = GameState.Tie
-            return true
-        }
-        return false
     }
 
 

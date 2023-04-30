@@ -1,6 +1,5 @@
-package cz.mendelu.xmusil5.tictactoe.game
+package cz.mendelu.xmusil5.tictactoe.game.player
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.ui.theme.oColor

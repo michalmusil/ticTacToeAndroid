@@ -1,4 +1,4 @@
-package cz.mendelu.xmusil5.tictactoe.game
+package cz.mendelu.xmusil5.tictactoe.game.player
 
 enum class PlayerType {
     HUMAN,

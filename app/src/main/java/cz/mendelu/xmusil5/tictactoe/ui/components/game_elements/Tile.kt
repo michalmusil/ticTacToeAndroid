@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.ui.utils.UiConstants
 
 @OptIn(ExperimentalAnimationApi::class)

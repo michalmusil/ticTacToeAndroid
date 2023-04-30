@@ -1,7 +1,7 @@
 package cz.mendelu.xmusil5.tictactoe.navigation
 
 import androidx.navigation.NavController
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 
 interface INavigationRouter {
     fun getNavController(): NavController

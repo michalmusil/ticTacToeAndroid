@@ -3,7 +3,7 @@ package cz.mendelu.xmusil5.tictactoe.ui.screens.game_screen
 import androidx.lifecycle.ViewModel
 import cz.mendelu.xmusil5.tictactoe.game.Game
 import cz.mendelu.xmusil5.tictactoe.game.GameState
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ class GameViewModel @Inject constructor(
 ): ViewModel() {
     val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
-    val uiState: MutableStateFlow<GameUiState> = MutableStateFlow(GameUiState.Start)
+    val uiState: MutableStateFlow<GameUiState> = MutableStateFlow(GameUiState.Start())
     val humanPlayerMark: MutableStateFlow<PlayerMark> = MutableStateFlow(PlayerMark.X)
     var boardTiles: MutableStateFlow<Array<PlayerMark?>> = MutableStateFlow(arrayOfNulls(1))
 
@@ -35,11 +35,11 @@ class GameViewModel @Inject constructor(
         coroutineScope.launch {
             game.state.collectLatest {
                 when(it){
-                    GameState.ComputerPlayerTurn -> uiState.value = GameUiState.ComputerPlayerTurn
-                    GameState.ComputerPlayerWon -> uiState.value = GameUiState.ComputerPlayerVictory
-                    GameState.HumanPlayerTurn -> uiState.value = GameUiState.HumanPlayerTurn
-                    GameState.HumanPlayerWon -> uiState.value = GameUiState.HumanPlayerVictory
-                    GameState.Tie -> uiState.value = GameUiState.Tie
+                    is GameState.ComputerPlayerTurn -> uiState.value = GameUiState.ComputerPlayerTurn()
+                    is GameState.ComputerPlayerWon -> uiState.value = GameUiState.ComputerPlayerVictory(it.victoryPath)
+                    is GameState.HumanPlayerTurn -> uiState.value = GameUiState.HumanPlayerTurn()
+                    is GameState.HumanPlayerWon -> uiState.value = GameUiState.HumanPlayerVictory(it.victoryPath)
+                    is GameState.Tie -> uiState.value = GameUiState.Tie()
                 }
             }
         }

@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.ui.screens.game_screen.GameScreen
 import cz.mendelu.xmusil5.tictactoe.ui.screens.splash_screen.SplashScreen
 import cz.mendelu.xmusil5.tictactoe.ui.screens.startup_screen.StartupScreen

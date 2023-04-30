@@ -1,7 +1,7 @@
 package cz.mendelu.xmusil5.tictactoe.ui.screens.startup_screen
 
 import androidx.lifecycle.ViewModel
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

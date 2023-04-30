@@ -26,13 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cz.mendelu.xmusil5.tictactoe.R
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
 import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
 import cz.mendelu.xmusil5.tictactoe.ui.theme.shadowColor
 import cz.mendelu.xmusil5.tictactoe.ui.utils.UiConstants
 import cz.mendelu.xmusil5.tictactoe.ui.utils.customShadow
-import cz.mendelu.xmusil5.tictactoe.ui.utils.customShadowPercentage
 
 @Composable
 fun StartupScreen(

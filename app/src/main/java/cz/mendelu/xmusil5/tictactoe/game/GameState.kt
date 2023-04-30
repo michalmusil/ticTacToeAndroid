@@ -1,9 +1,11 @@
 package cz.mendelu.xmusil5.tictactoe.game
 
+import cz.mendelu.xmusil5.tictactoe.game.board.VictoryPath
+
 sealed class GameState(){
-    object HumanPlayerTurn: GameState()
-    object ComputerPlayerTurn: GameState()
-    object HumanPlayerWon: GameState()
-    object ComputerPlayerWon: GameState()
-    object Tie: GameState()
+    class HumanPlayerTurn: GameState()
+    class ComputerPlayerTurn: GameState()
+    class HumanPlayerWon(val victoryPath: VictoryPath): GameState()
+    class ComputerPlayerWon(val victoryPath: VictoryPath): GameState()
+    class Tie: GameState()
 }

@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cz.mendelu.xmusil5.tictactoe.R
-import cz.mendelu.xmusil5.tictactoe.game.PlayerMark
+import cz.mendelu.xmusil5.tictactoe.game.Game
+import cz.mendelu.xmusil5.tictactoe.game.board.VictoryPath
+import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
 import cz.mendelu.xmusil5.tictactoe.ui.components.game_elements.Tile
 import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
@@ -32,7 +34,7 @@ fun GameScreen(
     val uiState = viewModel.uiState.collectAsState()
     uiState.value.let {
         when(it){
-            GameUiState.Start -> {
+            is GameUiState.Start -> {
                 LaunchedEffect(it){
                     viewModel.initializeGame(
                         humanPlayerMark = humanPlayerMark,
@@ -116,6 +118,25 @@ fun GameBoard(
     val playerInputEnabled = when(uiState.value){
         is GameUiState.HumanPlayerTurn -> true
         else -> false
+    }
+
+    var victoryPath by remember{
+        mutableStateOf<VictoryPath?>(null)
+    }
+    uiState.value.let {
+        LaunchedEffect(uiState.value){
+            when(it){
+                is GameUiState.HumanPlayerVictory -> {
+                    victoryPath = it.victoryPath
+                }
+                is GameUiState.ComputerPlayerVictory -> {
+                    victoryPath = it.victoryPath
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        }
     }
 
     Box(
