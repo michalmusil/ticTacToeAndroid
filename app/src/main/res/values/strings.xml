@@ -7,7 +7,11 @@
     <string name="yourTurn">Your turn</string>
     <string name="oponentsTurn">Oponent\'s turn</string>
 
-    <string name="youHaveWon">You have won</string>
-    <string name="youHaveLost">You have lost</string>
-    <string name="itsTie">It\'s a tie</string>
+    <string name="youHaveWon">You have won 🥳</string>
+    <string name="youHaveLost">You have lost 🤕</string>
+    <string name="itsTie">It\'s a tie 😬</string>
+
+    <string name="backToMenu">Back to menu</string>
+    <string name="playAgain">Play again</string>
+
 </resources>
