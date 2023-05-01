@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
@@ -40,6 +41,8 @@ import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
 import cz.mendelu.xmusil5.tictactoe.ui.components.game_elements.Tile
 import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
+import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.GradientText
+import cz.mendelu.xmusil5.tictactoe.ui.theme.onRed
 import cz.mendelu.xmusil5.tictactoe.ui.theme.red
 import cz.mendelu.xmusil5.tictactoe.ui.theme.shadowColor
 import cz.mendelu.xmusil5.tictactoe.ui.utils.UiConstants
@@ -124,11 +127,9 @@ fun GameScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(
+            GradientText(
                 text = topText,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                textSize = 30.sp
             )
             currentTurnMark?.let {
                 Icon(
@@ -158,7 +159,7 @@ fun GameScreenContent(
             text = stringResource(id = R.string.concede),
             backgroundColor = red,
             iconId = R.drawable.ic_close,
-            textColor = MaterialTheme.colorScheme.background,
+            textColor = onRed,
             onClick = {
                 navigation.toStartupScreen()
             }
@@ -332,11 +333,9 @@ fun GameEndPopup(
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(16.dp)
                 ) {
-                    Text(
+                    GradientText(
                         text = mainText,
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold
+                        textSize = 20.sp
                     )
 
                     Spacer(modifier = Modifier.height(15.dp))

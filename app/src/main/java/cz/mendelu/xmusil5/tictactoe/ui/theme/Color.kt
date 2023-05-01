@@ -11,21 +11,22 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 
-val primary = Color(0xFFEB9F1C)
+val primary = Color(0xFFFFF07C)
 val onPrimary = Color(0xFF2E2E2E)
-val secondary = Color(0xFF0AB0C0)
+val secondary = Color(0xFFFFCB7D)
 val onSecondary = Color(0xFF2E2E2E)
 
-val background = Color(0xFFF0EEF1)
-val onBackground = Color(0xFF2E2E2E)
+val background = Color(0xFF151515)
+val onBackground = Color(0xFFF3F3F3)
 
-val surface = Color(0xFFE9DECB)
-val onSurface = Color(0xFF2E2E2E)
+val surface = Color(0xFF202030)
+val onSurface = Color(0xFFF3F3F3)
 
-val xColor = Color(0xFFCE1A44)
-val oColor = Color(0xFF2C3CDA)
+val xColor = Color(0xFFE02A45)
+val oColor = Color(0xFF4369E0)
 
 val disabledColor = Color(0xFF919191)
 val shadowColor = Color(0xFF464646)
 
 val red = Color(0xFFCC0000)
+val onRed = Color(0xFFF3F3F3)

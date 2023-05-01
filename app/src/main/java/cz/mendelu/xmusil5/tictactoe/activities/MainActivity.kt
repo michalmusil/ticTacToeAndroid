@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     NavGraph(navigation = navigationRouter, startDestination = Destination.SplashScreen.route)
                 }
             }

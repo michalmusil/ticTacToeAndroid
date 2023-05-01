@@ -6,19 +6,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.compose.*
 import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
+import cz.mendelu.xmusil5.tictactoe.ui.theme.oColor
+import cz.mendelu.xmusil5.tictactoe.ui.theme.xColor
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
     navigation: INavigationRouter,
-    maxScreenDuration: Long = 3000,
+    maxScreenDuration: Long = 4000,
 ){
     val animationIsPlaying = remember {
         mutableStateOf(true)
@@ -60,6 +61,7 @@ fun SplashScreen(
 fun SplashAnimation(
     isPlaying: MutableState<Boolean>
 ){
+
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.opening)
     )
@@ -67,9 +69,41 @@ fun SplashAnimation(
         composition = composition,
         speed = 1.5f
     )
+    val dynamicProperties = rememberLottieDynamicProperties(
+        rememberLottieDynamicProperty(
+            property = LottieProperty.STROKE_COLOR,
+            keyPath = arrayOf(
+                "Livello forma 1",
+                "Ellisse 1",
+                "Traccia 1"
+            ),
+            value = oColor.toArgb()
+        ),
+        rememberLottieDynamicProperty(
+            property = LottieProperty.STROKE_COLOR,
+            keyPath = arrayOf(
+                "Livello forma 2",
+                "Forma 1",
+                "Traccia 1"
+            ),
+            value = xColor.toArgb(),
+        ),
+        rememberLottieDynamicProperty(
+            property = LottieProperty.STROKE_COLOR,
+            keyPath = arrayOf(
+                "Livello forma 3",
+                "Forma 1",
+                "Traccia 1"
+                ),
+            value = xColor.toArgb(),
+        )
+    )
+
+
     LottieAnimation(
         composition = composition,
         progress = { progress },
+        dynamicProperties = dynamicProperties
     )
     if (progress >= 1.0f){
         isPlaying.value = false

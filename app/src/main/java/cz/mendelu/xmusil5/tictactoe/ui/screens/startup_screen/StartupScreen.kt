@@ -30,6 +30,7 @@ import cz.mendelu.xmusil5.tictactoe.R
 import cz.mendelu.xmusil5.tictactoe.game.player.PlayerMark
 import cz.mendelu.xmusil5.tictactoe.navigation.INavigationRouter
 import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.CustomButton
+import cz.mendelu.xmusil5.tictactoe.ui.components.ui_elements.GradientText
 import cz.mendelu.xmusil5.tictactoe.ui.theme.shadowColor
 import cz.mendelu.xmusil5.tictactoe.ui.utils.UiConstants
 import cz.mendelu.xmusil5.tictactoe.ui.utils.customShadow
@@ -69,26 +70,22 @@ fun StartupScreenContent(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
+            .padding(16.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(UiConstants.RADIUS_MEDIUM))
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(10.dp)
         ) {
+            GradientText(
+                text = stringResource(id = R.string.app_name),
+                textSize = 30.sp
+            )
 
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(UiConstants.RADIUS_CAPSULE_PERCENTAGE))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(horizontal = 40.dp, vertical = 10.dp)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -107,21 +104,19 @@ fun StartupScreenContent(
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            CustomButton(
-                text = stringResource(id = R.string.play),
-                enabled = chosenPlayerMark.value != null,
-                iconId = R.drawable.ic_play,
-                textSize = 30.sp,
-                onClick = {
-                    viewModel.startGame()
-                })
         }
 
+        Spacer(modifier = Modifier.height(50.dp))
+
+        CustomButton(
+            text = stringResource(id = R.string.play),
+            enabled = chosenPlayerMark.value != null,
+            iconId = R.drawable.ic_play,
+            textSize = 30.sp,
+            onClick = {
+                viewModel.startGame()
+            })
     }
-    
 }
 
 
@@ -132,9 +127,9 @@ fun PlayerMarkOption(
     mark: PlayerMark,
     chosenPlayerMark: PlayerMark?,
     startingPlayerMark: PlayerMark,
-    onClick: (PlayerMark) -> Unit
+    onClick: (PlayerMark) -> Unit,
 ){
-    val size = 150.dp
+    val size = 120.dp
     val cornerRadius = UiConstants.RADIUS_SMALL
     val selectedColor by animateColorAsState(
         targetValue = if (mark == chosenPlayerMark) mark.color else Color.Transparent,
@@ -162,7 +157,7 @@ fun PlayerMarkOption(
             .clickable {
                 onClick(mark)
             }
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.secondary)
             .border(width = 5.dp, color = selectedColor, shape = RoundedCornerShape(cornerRadius))
             .padding(10.dp)
     ){
@@ -191,7 +186,7 @@ fun PlayerMarkOption(
                     Text(
                         text = stringResource(id = R.string.starting),
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSecondary,
                         fontWeight = FontWeight.Bold
                     )
                 }
