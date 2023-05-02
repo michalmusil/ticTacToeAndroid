@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Piškvorky</string>
+
+    <string name="starting">Začíná</string>
+    <string name="play">Hrát</string>
+    <string name="concede">Vzdát se</string>
+    <string name="yourTurn">Tvůj tah</string>
+    <string name="oponentsTurn">Tah oponenta</string>
+
+    <string name="youHaveWon">Vyhrál jsi 🥳</string>
+    <string name="youHaveLost">Prohrál jsi 🤕</string>
+    <string name="itsTie">Remíza 😬</string>
+
+    <string name="backToMenu">Zpět do menu</string>
+    <string name="playAgain">Hrát znovu</string>
+
+</resources>

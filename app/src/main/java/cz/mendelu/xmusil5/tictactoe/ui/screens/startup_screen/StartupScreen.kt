@@ -52,6 +52,7 @@ fun StartupScreen(
                         humanPlayerMark = it.humanPlayerMark,
                         startingMark = it.startingPlayerMark
                     )
+                    viewModel.state.value = StartupUiState.Start()
                 }
             }
         }

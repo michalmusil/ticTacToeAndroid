@@ -29,7 +29,7 @@ class NavigationRouterImpl: INavigationRouter {
     }
 
     override fun toStartupScreen() {
-        navController.navigate(Destination.StartupScreen.route)
+        emptyBackstackAndNavigate(Destination.StartupScreen)
     }
 
     override fun toGameScreen(humanPlayerMark: PlayerMark, startingMark: PlayerMark) {
