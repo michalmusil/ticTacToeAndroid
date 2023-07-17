@@ -4,9 +4,5 @@ A second part of a school project focused on observing the capabilities of neura
 The practical implementation of creating the oponent model is available [here](https://github.com/michalmusil/tic-tac-toe-mlp).
 
 ## In-app screenshots
-* Startup screen
-![startup screen](./images/start_screen.png)
-* Playing a game
-![playing](./images/playing_screen.png)
-* Victory
-![victory](./images/winning_screen.png)
+![screenshots](./images/screenshots.png)
+
